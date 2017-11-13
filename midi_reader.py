@@ -37,8 +37,8 @@ def ptb_raw_data(data_path=None):
   valid_path = os.path.join(data_path, "melodygen.valid.txt")
   test_path = os.path.join(data_path, "melodygen.test.txt")
 
-  midi_idx = _read_MIDItxt(midi_idx_path) #使用train.txt來做word to id
-  train_data = _read_MIDItxt(train_path) #如果本來midi就已經編號好了 這部分不用做
+  midi_idx = _read_MIDItxt(midi_idx_path) 
+  train_data = _read_MIDItxt(train_path) 
   valid_data = _read_MIDItxt(valid_path)
   test_data = _read_MIDItxt(test_path)
   midi_idx_numbers = len(midi_idx)
