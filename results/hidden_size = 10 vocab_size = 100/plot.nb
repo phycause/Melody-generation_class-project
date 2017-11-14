@@ -1,0 +1,113 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      3514,        103]
+NotebookOptionsPosition[      3197,         87]
+NotebookOutlinePosition[      3542,        102]
+CellTagsIndexPosition[      3499,         99]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"perplecity", " ", "=", " ", 
+   RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"For", "[", 
+  RowBox[{
+   RowBox[{"i", "=", "1"}], ",", 
+   RowBox[{"i", "\[LessEqual]", "3"}], ",", 
+   RowBox[{"i", "++"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"data", " ", "=", " ", 
+    RowBox[{"Import", "[", 
+     RowBox[{
+     "\"\<C:\\\\Users\\\\PhycauseStudio\\\\Documents\\\\GitHub\\\\Fianl_\
+Project\\\\results\\\\hidden_size = 10 vocab_size = \
+100\\\\perplexity_log_Epoch\>\"", "<>", 
+      RowBox[{"IntegerString", "[", "i", "]"}], "<>", "\"\<.txt\>\""}], 
+     "]"}]}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"perplecity", " ", "=", " ", 
+   RowBox[{"Join", "[", 
+    RowBox[{"perplecity", " ", ",", " ", 
+     RowBox[{"StringSplit", "[", "data", "]"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"perplecities", "  ", "=", " ", 
+   RowBox[{"ToExpression", "[", "perplecity", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"ListPlot", "[", 
+  RowBox[{"perplecities", "  ", ",", 
+   RowBox[{"PlotRange", "\[Rule]", "All"}], ",", 
+   RowBox[{"Joined", "\[Rule]", "True"}], ",", 
+   RowBox[{"PlotStyle", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"Thick", ",", 
+      RowBox[{"PointSize", "[", "Large", "]"}]}], "}"}]}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.719616264165022*^9, 3.719616283619135*^9}, {
+  3.719616531389306*^9, 3.719616571890623*^9}, {3.7196166336361547`*^9, 
+  3.7196167227712526`*^9}, {3.7196167960284433`*^9, 3.719616820138822*^9}, {
+  3.7196225333535995`*^9, 3.719622651577361*^9}, {3.719622693184741*^9, 
+  3.7196227614726467`*^9}}],
+
+Cell[BoxData[
+ GraphicsBox[{{}, 
+   {RGBColor[0.24720000000000014`, 0.24, 0.6], PointSize[Large], Thickness[
+    Large], LineBox[CompressedData["
+1:eJxTTMoPSmViYGCQA2IQDQEf7G1/R+3626voABVw6DXImzBrwW97CJfDIWT1
+z3T7qG9QvoBDjIGLtNOiL1C+iEOjWd3tnwwwvoRDFscbNd0ln6F8GYcH4YZ/
+XVJgfAWHw5NWq2a5wfhKDlwL/xQ46MP4Kg7O//yff5aF8dUctv5686XrKYyv
+4ZBo8GPjvHefoHwtB6YTQS//FMP4Og5WLAX+wiowvp5DPe9ebzc438BB6cPP
+TQ6qML6hQz//Kl0pZRjfyGGlqcq1VH0Y39ghttT8+1ZzGN/EQeGwnsE2Oxjf
+1EHyfOQP3ucw95k5FJbcYtl+BiZv7tB1jSf9RDSMb+FQvcWq8YQAjG/pYPmq
+co+IMIxv5XAg7ERtmyiMb+0g1R/9MFkExrdxOJ9z54+uIoxv6yB97py/hhaM
+b+fwNLnU96rhJ3sAysqHgQ==
+     "]]}, {}},
+  AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+  Axes->True,
+  AxesLabel->{None, None},
+  AxesOrigin->{1., 1.12909746628},
+  ImageSize->{493., Automatic},
+  Method->{},
+  PlotRangeClipping->True]], "Output",
+ CellChangeTimes->{{3.719622535080698*^9, 3.7196226421318207`*^9}, {
+  3.719622695317863*^9, 3.719622761897671*^9}}]
+}, Open  ]]
+},
+WindowSize->{707, 817},
+WindowMargins->{{Automatic, 218}, {31, Automatic}},
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 1645, 39, 232, "Input"],
+Cell[2227, 63, 954, 21, 326, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
