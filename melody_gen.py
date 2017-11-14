@@ -290,7 +290,7 @@ class PTBModel(object):
   def final_state_name(self):
     return self._final_state_name
 
-def run_epoch(session, model, perplexity_array, eval_op=None, verbose=False):
+def run_epoch(session, model, eval_op=None, verbose=False):
   """Runs the model on the given data."""
   start_time = time.time()
   costs = 0.0
@@ -322,8 +322,8 @@ def run_epoch(session, model, perplexity_array, eval_op=None, verbose=False):
             (step * 1.0 / model.input.epoch_size, np.exp(costs / iters),
              iters * model.input.batch_size * max(1, FLAGS.num_gpus) /
              (time.time() - start_time)))
-      perplexity_array.append(np.exp(costs / iters))
-  return np.exp(costs / iters), perplexity_array
+    
+  return np.exp(costs / iters)
 
 
 def get_config():
@@ -414,11 +414,12 @@ def main(_):
         m.assign_lr(session, config.learning_rate * lr_decay)
 
         print("Epoch: %d Learning rate: %.3f" % (i + 1, session.run(m.lr)))
-        train_perplexity, perplexity_log = run_epoch(session, m, perplexity_log, eval_op=m.train_op,
+        train_perplexity = run_epoch(session, m, eval_op=m.train_op,
                                      verbose=True)
-        with open('results/perplexity_log_Epoch' + str(i + 1) + '.txt', 'w') as text_file: #save perplexity log
+        perplexity_log.append(train_perplexity)
+        with open('results/perplexity_log.txt', 'w') as text_file: #save perplexity log
           for idx in perplexity_log:
-            text_file.write(str(idx) + '\n')
+            text_file.write(str(idx) + ',')
         
         print("Epoch: %d Train Perplexity: %.3f" % (i + 1, train_perplexity))
 
