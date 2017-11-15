@@ -52,7 +52,7 @@ $ tar xvf simple-examples.tgz
 
 To run:
 
-$ python ptb_word_lm.py --data_path=simple-examples/data/
+$ python melody_gen.py --data_path=data/ --model=large
 
 """
 from __future__ import absolute_import
@@ -137,6 +137,8 @@ class PTBModel(object):
         "softmax_w", [size, vocab_size], dtype=data_type())
     softmax_b = tf.get_variable("softmax_b", [vocab_size], dtype=data_type())
     logits = tf.nn.xw_plus_b(output, softmax_w, softmax_b)
+    # ouput_logits = tf.Variable(np.zeros((400, 100)), trainable=False, name = )
+    # self._logits = tf.assign(ouput_logits, tf.to_double(logits, name='ToDouble'))
      # Reshape logits to be a 3-D tensor for sequence loss
     logits = tf.reshape(logits, [self.batch_size, self.num_steps, vocab_size])
 
@@ -309,7 +311,8 @@ def run_epoch(session, model, eval_op=None, verbose=False):
     for i, (c, h) in enumerate(model.initial_state):
       feed_dict[c] = state[i].c
       feed_dict[h] = state[i].h
-
+    # session.run(model._logits)
+    # predict_value = session.run(ouput_logits)
     vals = session.run(fetches, feed_dict)
     cost = vals["cost"]
     state = vals["final_state"]
@@ -322,7 +325,7 @@ def run_epoch(session, model, eval_op=None, verbose=False):
             (step * 1.0 / model.input.epoch_size, np.exp(costs / iters),
              iters * model.input.batch_size * max(1, FLAGS.num_gpus) /
              (time.time() - start_time)))
-    
+      # print(predict_value)
   return np.exp(costs / iters)
 
 
@@ -365,7 +368,10 @@ def main(_):
   eval_config = get_config()
   eval_config.batch_size = 1
   eval_config.num_steps = 1
-  perplexity_log = []
+
+  train_perplexity_log = []
+  valid_perplexity_log = []
+
   with tf.Graph().as_default():
     initializer = tf.random_uniform_initializer(-config.init_scale,
                                                 config.init_scale)
@@ -391,6 +397,7 @@ def main(_):
                          input_=test_input)
 
     models = {"Train": m, "Valid": mvalid, "Test": mtest}
+
     for name, model in models.items():
       model.export_ops(name)
     metagraph = tf.train.export_meta_graph()
@@ -416,15 +423,19 @@ def main(_):
         print("Epoch: %d Learning rate: %.3f" % (i + 1, session.run(m.lr)))
         train_perplexity = run_epoch(session, m, eval_op=m.train_op,
                                      verbose=True)
-        perplexity_log.append(train_perplexity)
-        with open('results/perplexity_log.txt', 'w') as text_file: #save perplexity log
-          for idx in perplexity_log:
+        train_perplexity_log.append(train_perplexity)
+        with open('results/train_perplexity_log.txt', 'w') as text_file: #save train_perplexity log
+          for idx in train_perplexity_log:
             text_file.write(str(idx) + ',')
         
         print("Epoch: %d Train Perplexity: %.3f" % (i + 1, train_perplexity))
 
-      #   valid_perplexity = run_epoch(session, mvalid)
-      #   print("Epoch: %d Valid Perplexity: %.3f" % (i + 1, valid_perplexity))
+        valid_perplexity = run_epoch(session, mvalid)
+        valid_perplexity_log.append(valid_perplexity) 
+        with open('results/valid_perplexity_log.txt', 'w') as text_file: #save train_perplexity log
+          for idx in valid_perplexity_log:
+            text_file.write(str(idx) + ',')
+        print("Epoch: %d Valid Perplexity: %.3f" % (i + 1, valid_perplexity))
 
       # test_perplexity = run_epoch(session, mtest)
       # print("Test Perplexity: %.3f" % test_perplexity)
