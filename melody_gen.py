@@ -52,7 +52,7 @@ $ tar xvf simple-examples.tgz
 
 To run:
 
-$ python melody_gen.py --data_path=data/ --model=large
+$ python melody_gen.py --data_path=data/ --model=medium
 
 """
 from __future__ import absolute_import
