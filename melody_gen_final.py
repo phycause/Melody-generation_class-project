@@ -11,9 +11,9 @@ flags = tf.flags
 logging = tf.logging
 
 
-flags.DEFINE_integer("state_size", 64,
+flags.DEFINE_integer("state_size", 128,
                      "hidden layer size")
-flags.DEFINE_integer("num_layers", 2,
+flags.DEFINE_integer("num_layers", 3,
                      "num_layers")
 flags.DEFINE_integer("seq_length", 16,
                      "seq_length")
@@ -25,12 +25,12 @@ FLAGS = flags.FLAGS
 class HParam():
 
     batch_size = 20
-    n_epoch = 1
+    n_epoch = 50
     learning_rate = 0.1
     decay_steps = 2000
     decay_rate = 0.9
     grad_clip = 5
-    keep_prob = 0.9
+    keep_prob = 0.35
 
     state_size = FLAGS.state_size
     num_layers = FLAGS.num_layers
@@ -47,7 +47,7 @@ class DataGenerator():
         self.seq_length = config.seq_length
         self.batch_size = config.batch_size
         with open(datafiles, "r") as text_file:
-            self.data = list(map(int, text_file.read().split(' ')))
+            self.data = list(text_file.read().split(' '))
 
         self.is_valid = is_valid
         if is_valid:
@@ -187,7 +187,7 @@ def train(data, is_valid, model, config):
             train_loss, summary, _, _ = sess.run([model.cost, model.merged_op, model.last_state, model.train_op],
                                                  feed_dict)
 
-            if i % 10 == 0:
+            if i % 100 == 0:
                 writer.add_summary(summary, global_step=i)                
                 print('Step:{}/{}, training_loss:{:4f}'.format(i,
                                                                max_iter, train_loss))
@@ -206,11 +206,12 @@ def sample(data, is_valid, model, config):
     saver = tf.train.Saver()
     with tf.Session() as sess:
         ckpt = tf.train.latest_checkpoint(config.log_dir)
+        # ckpt = os.path.join(config.log_dir, 'melody_gen_model.ckpt-14000')
         print(ckpt)
         saver.restore(sess, ckpt)
 
         # initial Value
-        prime = [64]
+        prime = ['62_0.13']
         if is_valid: #取出第一個data當input，第二個當target
             prime , ans= data.next_batch()
             prime = [data.id2note(prime[0][0])]
