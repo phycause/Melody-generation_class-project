@@ -11,7 +11,7 @@ flags = tf.flags
 logging = tf.logging
 
 
-flags.DEFINE_integer("state_size", 128,
+flags.DEFINE_integer("state_size", 400,
                      "hidden layer size")
 flags.DEFINE_integer("num_layers", 3,
                      "num_layers")
